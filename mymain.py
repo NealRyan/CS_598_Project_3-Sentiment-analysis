@@ -24,6 +24,7 @@ def main():
 
     train = pd.read_csv(train, sep='\t')
     test = pd.read_csv(test, sep='\t')
+    print(type(train))
 
     stopwords = ["i", "me", "my", "myself", "we", "our", "ours", "ourselves", "you", "your", "yours", "their", "they", "his", \
              "her", "she", "he", "a", "an", "and", "is", "was", "are", "were", "him", "himself", "has", "have", "it", "its", \
