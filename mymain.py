@@ -1,9 +1,26 @@
+# Project 3 Report: Movie Review Sentiment Analysis
+# CS 598 Practical Statistical Learning, Fall 2023 
+#
+# Team Members 
+# * Kurt Tuohy (ktuohy): contraction expansion, token t-test, token exploration
+# * Neal Ryan (nealpr2): notebook configuration, initial tokenization, lasso token regularization
+# * Alelign Faris (faris2): mymain.py
+#
+# Approach based on Campuswire post 628.
+#
+# TO RUN THIS SCRIPT:
+# Call "python mymain.py" with three arguments:
+# 1) myvocab_file: the name of the file with desired vocabulary, e.g. "myvocab.txt"
+# 2) train_file: the training data file, e.g. "train.tsv"
+# 3) test_file: the test data file, e.g. "test.tsv"
+
+
 import argparse
 import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.linear_model import LogisticRegression
-from sklearn.linear_model import LogisticRegressionCV
+#from sklearn.linear_model import LogisticRegressionCV
 from sklearn.metrics import roc_auc_score
 
 
@@ -149,11 +166,17 @@ def expand_contractions(reviews):
     return reviews
 
 def preprocess_reviews(reviews):
-        reviews = reviews.str.replace('<.*?>', ' ', regex=True)
-        reviews = reviews.str.lower()
-        reviews = expand_contractions(reviews)
-        
-        return reviews
+    """
+    Routine to preprocess text: strip out HTML, convert to lowercase, and expand English contractions.
+    """
+    # Remove HTML tags
+    reviews = reviews.str.replace('<.*?>', ' ', regex=True)
+    # Convert to lowercase
+    reviews = reviews.str.lower()
+    # Expand English contractions
+    reviews = expand_contractions(reviews)
+    
+    return reviews
 
 def main():
     parser = argparse.ArgumentParser(description="Process three input files.")
@@ -189,13 +212,9 @@ def main():
     print("Tokenizing Reviews (~1 min)...")
     dtm_vocab_train = top_feature_vectorizer.fit_transform(preprocess_reviews(train["review"]))
 
-    print("Grid Searching for best parameters...")
-    grid_search = LogisticRegressionCV(Cs=10, cv=5, penalty="l2", scoring="roc_auc", max_iter=100000, random_state=SEED)
-    all_train_y = train["sentiment"]
-    grid_search.fit(dtm_vocab_train, all_train_y)
-    best_C = grid_search.C_[0]
-
     print("Running sentiment analysis model (~2 mins)...")
+    # Optimal regularization parameter setting for ridge regression
+    best_C = 21.54434690031882
     model = LogisticRegression(C=best_C, penalty="l2", max_iter=100000, random_state=SEED)  
     train_X = dtm_vocab_train
     train_y = train["sentiment"]
@@ -206,7 +225,7 @@ def main():
     pred_y = model.predict_proba(test_X)[:, 1]  # Predict probabilities for class 1 (positive review)
     
     output = pd.DataFrame()
-    output['id'] = train['id']
+    output['id'] = test['id']
     output['prob'] = pred_y
     output.to_csv('mysubmission.csv', index=False)
     print("Done")
