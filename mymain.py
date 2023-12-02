@@ -179,17 +179,21 @@ def preprocess_reviews(reviews):
     return reviews
 
 def main():
-    parser = argparse.ArgumentParser(description="Process three input files.")
+    #parser = argparse.ArgumentParser(description="Process three input files.")
 
-    parser.add_argument('myvocab_file', type=str, help='Path to myvocab.txt')
-    parser.add_argument('train_file', type=str, help='Path to train.tsv')
-    parser.add_argument('test_file', type=str, help='Path to test.tsv')
+    #parser.add_argument('myvocab_file', type=str, help='Path to myvocab.txt')
+    #parser.add_argument('train_file', type=str, help='Path to train.tsv')
+    #parser.add_argument('test_file', type=str, help='Path to test.tsv')
 
-    args = parser.parse_args()
+    #args = parser.parse_args()
 
-    vocab = args.myvocab_file
-    train = args.train_file
-    test = args.test_file
+    #vocab = args.myvocab_file
+    #train = args.train_file
+    #test = args.test_file
+
+    vocab = 'myvocab.txt'
+    train = 'train.tsv'
+    test = 'test.tsv'
 
     vocab = pd.read_csv(vocab, sep=',', header=None, names=['word'])
     best_vocab = vocab['word'].tolist()
