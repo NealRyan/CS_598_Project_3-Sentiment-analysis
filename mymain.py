@@ -8,14 +8,9 @@
 #
 # Approach based on Campuswire post 628.
 #
-# TO RUN THIS SCRIPT:
-# Call "python mymain.py" with three arguments:
-# 1) myvocab_file: the name of the file with desired vocabulary, e.g. "myvocab.txt"
-# 2) train_file: the training data file, e.g. "train.tsv"
-# 3) test_file: the test data file, e.g. "test.tsv"
+# TO RUN THIS SCRIPT: call "python mymain.py" from the command line.
 
 
-import argparse
 import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
@@ -161,7 +156,6 @@ def expand_contractions(reviews):
     # Replace all contractions in all reviews.
     for contraction in contractions:
         reviews = reviews.str.replace(contraction, contractions[contraction], regex=True)
-        #reviews = re.sub(contraction, contractions[contraction], reviews)
 
     return reviews
 
@@ -179,17 +173,6 @@ def preprocess_reviews(reviews):
     return reviews
 
 def main():
-    #parser = argparse.ArgumentParser(description="Process three input files.")
-
-    #parser.add_argument('myvocab_file', type=str, help='Path to myvocab.txt')
-    #parser.add_argument('train_file', type=str, help='Path to train.tsv')
-    #parser.add_argument('test_file', type=str, help='Path to test.tsv')
-
-    #args = parser.parse_args()
-
-    #vocab = args.myvocab_file
-    #train = args.train_file
-    #test = args.test_file
 
     vocab = 'myvocab.txt'
     train = 'train.tsv'
